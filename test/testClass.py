@@ -53,7 +53,7 @@ class Test:
         gAddButton.grid(row=0, column=0, padx=5, pady=5, sticky="NW")
         gDelButton = ttk.Button(RFrame, text="Delete Grade")
         gDelButton.grid(row=0, column=1, padx=5, pady=5, sticky="NW")
-        gEditButton = ttk.Button(RFrame, text="Delete Grade")
+        gEditButton = ttk.Button(RFrame, text="Edit Grade")
         gEditButton.grid(row=0, column=2, padx=5, pady=5, sticky="NW")
         # Gen grades
         gGenButton = ttk.Button(RFrame, text="Generate Report")

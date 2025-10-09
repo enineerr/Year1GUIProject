@@ -1,4 +1,4 @@
-import modules.obj
+from modules.GUI import GUI
 
 
-print("a")
+GUI()
