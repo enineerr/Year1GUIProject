@@ -1,15 +1,17 @@
-from modules.obj.grade import Grade
-
-
 class Student:
     def __init__(
             self,
-            fullName: str = "",
-            level: int = 0,
-            ID: int | None = None
+            name: str,
+            ID: int,
+            grades: dict[str, float] = {}
     ) -> None:
-        self.name = fullName.title()
-        self.level = level
         self.ID = ID
-        # self.grades: dict[str, str] = {}
-        self.grades: list[Grade] | None = None
+        self.Name = name.title()
+        self.grades = grades
+
+    def __call__(self):
+        # this can then be combined with the other dictionaries using .update()
+        return {self.Name: [self.ID, self.grades]}
+
+    def addGrade(self, courseName: str, grade: float):
+        self.grades[courseName] = grade

@@ -1,9 +1,14 @@
 # import tkinter as tk
 from tkinter import ttk
-from tkinter import Listbox, StringVar, Toplevel
+from tkinter import Listbox, StringVar, Toplevel, filedialog, messagebox
+from modules.files import files
 
 
 class dialog:
+    def __init__(self) -> None:
+        # This is for file handling with the edit menu and maybe also the initial menu
+        self.workingFile = None
+
     def addStudentDialog(self) -> list[str | int] | None:
         dialog = Toplevel(self.root)  # init dialog
 
@@ -65,3 +70,24 @@ class dialog:
 
     def addGrade(self):
         pass
+
+    def getFile(self):
+        self.workingFile = files(filedialog.askopenfilename())
+        # DEBUG
+        print()
+
+    def saveAs(self):
+        self.workingFile = files(filedialog.asksaveasfilename())
+        self.saveFile()
+
+    def saveFile(self) -> None:
+        # Check if there is a file yet
+        if self.workingFile is not None:
+            # if so try saving to it
+            self.workingFile.saveFile(self.students)
+        # Otherwise get the file and retry saving
+        else:
+            # See if the user wants to try again or not.
+            if (messagebox.askokcancel("No file selected", "Would you like to choose a file to save to?")):
+                self.getFile()
+                self.saveFile()
