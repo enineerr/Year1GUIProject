@@ -11,7 +11,8 @@ class Student:
 
     def __call__(self):
         # this can then be combined with the other dictionaries using .update()
-        return {self.Name: [self.ID, self.grades]}
+        print({self.ID: [self.Name, self.grades]})
+        return {self.ID: [self.Name, self.grades]}
 
     def addGrade(self, courseName: str, grade: float):
         self.grades[courseName] = grade

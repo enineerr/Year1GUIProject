@@ -9,7 +9,7 @@ class files:
 
         if (not path.exists(self.workingFile)):
             with open(self.workingFile, "w"):
-                pass
+                return
 
     def saveFile(self, students: list[Student]):
         sDict = {}
@@ -22,5 +22,14 @@ class files:
     def readFile(self) -> list[Student]:
         with open(self.workingFile, "r") as f:
             data = json.loads(f.read())
-        for i in data:
-            print(i)
+            out = []
+            for students in data:
+                out.append(
+                    Student(
+                        name=list(students.values())[0],
+                        ID=list(students.keys())[0],
+                        grades=list(students.values())[1]
+                    )
+                )
+
+            return out

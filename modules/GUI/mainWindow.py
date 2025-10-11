@@ -8,11 +8,18 @@ from modules.obj.student import Student
 class mainWindow(dialog):
     def __init__(self) -> None:
         # This will be the main variable for storing all the ugc in memory
-        self.students: list[Student | None] = []
+        self.students: list[Student] = []
 
         super().__init__()
         # Create root window
         self.root = tk.Tk()
+
+        self.sVar = []
+        self.sStrVar = StringVar(value=self.sVar)
+
+        self.gVar = []
+        self.gStrVar = StringVar(value=self.gVar)
+
         # Set Title
         self.root.title("Student Grade Manager")
 
@@ -46,25 +53,6 @@ class mainWindow(dialog):
             menu=fileMItem,
             underline=0
         )
-
-        # Init edit menu
-        fileMItem = tk.Menu(menuBar)
-        fileMItem.add_command(
-            label="Copy",
-            command=lambda: self.root.event_generate("<<Copy>>"),
-            underline=0
-        )
-        fileMItem.add_command(
-            label="Paste",
-            command=lambda: self.root.event_generate("<<Paste>>"),
-            underline=0
-        )
-        menuBar.add_cascade(
-            label="Edit",
-            menu=fileMItem,
-            underline=0
-        )
-
 
         # Define main frame everything else is contained within
         mainFrame = ttk.Frame(self.root, padding="2 2 12 12")
@@ -115,7 +103,7 @@ class mainWindow(dialog):
         ## Listboxes
         # L
         # LList = Listbox(LFrame, listvariable=valS, selectmode="extended", exportselection=False)
-        LList = Listbox(LFrame, selectmode="extended", exportselection=False)
+        LList = Listbox(LFrame, selectmode="extended", exportselection=False, listvariable=self.sStrVar)
         LList.grid(row=1, column=0, padx=5, pady=5, columnspan=3, sticky=("NESW"))
         # R
         # RList = Listbox(RFrame, listvariable=valS, selectmode="extended")
@@ -156,4 +144,15 @@ class mainWindow(dialog):
             sInfo[1] = largestID
 
         self.students.append(Student(sInfo[0], sInfo[1]))
+
+        self.updateBox1()
         
+    def updateBox1(self) -> None:
+        if (len(self.students) > 0):
+            for sObj in self.students:
+                print(sObj)
+                for names in sObj():
+                    print(names)
+                    # this line grabs the ID's and the names, then concats them to make a single entry
+                    self.sVar.append(f"{list(names.values())[1][0]} ({list(names.keys())[0]})")
+            self.sStrVar.set(self.sVar)

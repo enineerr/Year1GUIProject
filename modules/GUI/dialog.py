@@ -61,28 +61,36 @@ class dialog:
         return [str(name.get()).title(), int(str(id.get()))]
 
     @staticmethod
-    def checkID(val: str):
+    def checkID(val: str) -> bool:
         # If ID is empty allow
         if (len(val) == 0):
             return True
         # In anything else make sure is a number
         return val.isnumeric()
 
-    def addGrade(self):
+    def addGrade(self) -> None:
         pass
 
-    def getFile(self):
-        self.workingFile = files(filedialog.askopenfilename())
-        # DEBUG
-        print()
+    def getFile(self, save: bool = False) -> None:
+        file = filedialog.askopenfilename()
 
-    def saveAs(self):
-        self.workingFile = files(filedialog.asksaveasfilename())
-        self.saveFile()
+        # Make sure something was selected, if not return
+        if (file != ()):
+            self.workingFile = files(file)
+            if (not save):
+                self.students = self.workingFile.readFile()
+
+    def saveAs(self) -> None:
+        # self.workingFile = files(filedialog.asksaveasfilename())
+        file = filedialog.asksaveasfilename()
+
+        if (file != ()):
+            self.workingFile = files(file)
+            self.saveFile()
 
     def saveFile(self) -> None:
         # Check if there is a file yet
-        if self.workingFile is not None:
+        if (self.workingFile is not None):
             # if so try saving to it
             self.workingFile.saveFile(self.students)
         # Otherwise get the file and retry saving
@@ -90,4 +98,4 @@ class dialog:
             # See if the user wants to try again or not.
             if (messagebox.askokcancel("No file selected", "Would you like to choose a file to save to?")):
                 self.getFile()
-                self.saveFile()
+                self.saveFile(True)
