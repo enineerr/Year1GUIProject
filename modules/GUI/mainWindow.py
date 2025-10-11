@@ -146,13 +146,14 @@ class mainWindow(dialog):
         self.students.append(Student(sInfo[0], sInfo[1]))
 
         self.updateBox1()
-        
+
     def updateBox1(self) -> None:
         if (len(self.students) > 0):
             for sObj in self.students:
-                print(sObj)
-                for names in sObj():
-                    print(names)
+                for IDs, names in sObj().items():
                     # this line grabs the ID's and the names, then concats them to make a single entry
-                    self.sVar.append(f"{list(names.values())[1][0]} ({list(names.keys())[0]})")
+                    self.sVar.append(f"{names[0]} ({IDs})")
             self.sStrVar.set(self.sVar)
+
+    def updateBox2(self) -> None:
+        pass

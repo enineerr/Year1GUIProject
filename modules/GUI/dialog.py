@@ -2,6 +2,7 @@
 from tkinter import ttk
 from tkinter import Listbox, StringVar, Toplevel, filedialog, messagebox
 from modules.files import files
+from json import JSONDecodeError
 
 
 class dialog:
@@ -78,7 +79,14 @@ class dialog:
         if (file != ()):
             self.workingFile = files(file)
             if (not save):
-                self.students = self.workingFile.readFile()
+                try:
+                    self.students = self.workingFile.readFile()
+                except JSONDecodeError:
+                    messagebox.showerror(
+                        "Data unreadable",
+                        "The file selected did not contain valid JSON"
+                    )
+                self.updateBox1()
 
     def saveAs(self) -> None:
         # self.workingFile = files(filedialog.asksaveasfilename())

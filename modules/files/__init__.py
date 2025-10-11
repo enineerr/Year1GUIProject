@@ -21,14 +21,15 @@ class files:
 
     def readFile(self) -> list[Student]:
         with open(self.workingFile, "r") as f:
-            data = json.loads(f.read())
+            data: dict[int, list[str | dict[str, float]]] = json.loads(f.read())
+
             out = []
-            for students in data:
+            for IDs, info in data.items():
                 out.append(
                     Student(
-                        name=list(students.values())[0],
-                        ID=list(students.keys())[0],
-                        grades=list(students.values())[1]
+                        name=info[0],
+                        ID=IDs,
+                        grades=info[1]
                     )
                 )
 
