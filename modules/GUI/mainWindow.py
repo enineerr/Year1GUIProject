@@ -168,9 +168,7 @@ class mainWindow(dialog):
         self.updateBox1()
 
     def delStudent(self):
-        # Reverse indexs for popping
-        reversedSelection = self.sSelection[::-1]
-        for i in reversedSelection:
+        for i in self.sSelection:
             self.students.remove(i)
         self.updateBox1()
 
@@ -184,8 +182,8 @@ class mainWindow(dialog):
                     # this line grabs the ID's and the names, then concats them to make a single entry
                     self.sVar.append(f"{names[0]} ({IDs})")
 
-            # Update gui list
-            self.sStrVar.set(self.sVar)
+        # Update gui list
+        self.sStrVar.set(self.sVar)
 
     def updateBox2(self, selection) -> None:
         # Clear list var to reinit the whole list at once
@@ -201,4 +199,6 @@ class mainWindow(dialog):
             return
 
         for i in selection:
-            self.sSelection.append(self.students[i])
+            # Make sure there are students to show
+            if (len(self.students) > 0):
+                self.sSelection.append(self.students[i])

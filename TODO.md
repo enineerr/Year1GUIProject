@@ -9,3 +9,11 @@
 - talk about how data entry speed is an important consideration at every step of design
     - any application which is primarily designed around data entry and manipulation must consider the impact of reducing the ease of use for speed, and finding a good balance.
         - in my opinion, almost all of these should be TUI or emulated TUIs. moving between KB and mouse is the limiting factor when reading off a sheet of paper or another window.
+
+
+# gcode
+get index from gselection
+take sselctor list
+
+iterate through all student obj in sselector list, until index is counted to, then thats the grade meant to be selected
+repeat this for each gselection if multi select for del grade
