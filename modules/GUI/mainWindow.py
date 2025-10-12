@@ -1,11 +1,14 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import Listbox, StringVar, Toplevel
+from tkinter import Listbox, StringVar
 from modules.GUI.dialog import dialog
 from modules.obj.student import Student
+from modules.GUI.fileMan import fileMan
+from modules.GUI.studentCB import studentCB
+from modules.GUI.gradeCB import gradeCB
 
 
-class mainWindow(dialog):
+class mainWindow(fileMan):
     def __init__(self) -> None:
         # This will be the main variable for storing all the ugc in memory
         self.students: list[Student] = []
@@ -132,7 +135,7 @@ class mainWindow(dialog):
         RList.config(yscrollcommand=RScroll.set)
 
     def addStudent(self):
-        sInfo = self.addStudentDialog()
+        sInfo = dialog(self.students).addStudentDialog(self.root)
         if (sInfo is None):
             return
 

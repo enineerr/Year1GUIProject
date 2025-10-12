@@ -2,9 +2,9 @@
 from modules.GUI.mainWindow import mainWindow
 
 
-class GUI(mainWindow):
+class GUI:
     def __init__(self) -> None:
         # run the init window
         ## get the csv file to be working on
         # run the main window
-        super().__init__()
+        mainWindow()
