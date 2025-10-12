@@ -28,7 +28,7 @@ class files:
                 out.append(
                     Student(
                         name=info[0],
-                        ID=IDs,
+                        ID=int(IDs),
                         grades=info[1]
                     )
                 )

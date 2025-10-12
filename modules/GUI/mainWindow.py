@@ -10,13 +10,17 @@ class mainWindow(dialog):
         # This will be the main variable for storing all the ugc in memory
         self.students: list[Student] = []
 
+        self.sSelection: list[Student] = []
+
         super().__init__()
         # Create root window
         self.root = tk.Tk()
 
+        # Prepare LListBox (student) variable
         self.sVar = []
         self.sStrVar = StringVar(value=self.sVar)
 
+        # Prepare RListBox (grades) variable
         self.gVar = []
         self.gStrVar = StringVar(value=self.gVar)
 
@@ -84,9 +88,9 @@ class mainWindow(dialog):
         # Students
         sAddButton = ttk.Button(LFrame, text="Add Student", command=self.addStudent)
         sAddButton.grid(row=0, column=0, padx=5, pady=5, sticky="NW")
-        sDelButton = ttk.Button(LFrame, text="Delete Student")
+        sDelButton = ttk.Button(LFrame, text="Delete Student", command=self.delStudent)
         sDelButton.grid(row=0, column=1, padx=5, pady=5, sticky="NW")
-        sEditButton = ttk.Button(LFrame, text="Edit Student")
+        sEditButton = ttk.Button(LFrame, text="Edit Student", command=self.editStudent)
         sEditButton.grid(row=0, column=2, padx=5, pady=5, sticky="NW")
         # Grades
         gAddButton = ttk.Button(RFrame, text="Add Grade", command=self.addGrade)
@@ -105,6 +109,7 @@ class mainWindow(dialog):
         # LList = Listbox(LFrame, listvariable=valS, selectmode="extended", exportselection=False)
         LList = Listbox(LFrame, selectmode="extended", exportselection=False, listvariable=self.sStrVar)
         LList.grid(row=1, column=0, padx=5, pady=5, columnspan=3, sticky=("NESW"))
+        LList.bind("<<ListboxSelect>>", lambda _: self.updateBox2(LList.curselection()))
         # R
         # RList = Listbox(RFrame, listvariable=valS, selectmode="extended")
         RList = Listbox(RFrame, selectmode="extended")
@@ -131,6 +136,8 @@ class mainWindow(dialog):
         if (sInfo is None):
             return
 
+        largestID = 0
+
         if sInfo[1] == 0:
             if (len(self.students) == 0):
                 largestID = 0
@@ -143,17 +150,55 @@ class mainWindow(dialog):
             largestID += 1
             sInfo[1] = largestID
 
+        # Add new student to memory in object form
         self.students.append(Student(sInfo[0], sInfo[1]))
 
         self.updateBox1()
 
+    def editStudent(self):
+        # Only work if only 1 selection
+        if (len(self.sSelection) != 1):
+            return
+
+        name = self.addStudentDialog(inName=self.sSelection[0].Name, inId=str(self.sSelection[0].ID))
+        # Make sure user didnt edit to be blank
+        if (name is not None):
+            self.sSelection[0].name = name[0]
+
+        self.updateBox1()
+
+    def delStudent(self):
+        # Reverse indexs for popping
+        reversedSelection = self.sSelection[::-1]
+        for i in reversedSelection:
+            self.students.remove(i)
+        self.updateBox1()
+
     def updateBox1(self) -> None:
+        # Clear list var to reinit the whole list at once
+        self.sVar = []
+
         if (len(self.students) > 0):
             for sObj in self.students:
                 for IDs, names in sObj().items():
                     # this line grabs the ID's and the names, then concats them to make a single entry
                     self.sVar.append(f"{names[0]} ({IDs})")
+
+            # Update gui list
             self.sStrVar.set(self.sVar)
 
-    def updateBox2(self) -> None:
-        pass
+    def updateBox2(self, selection) -> None:
+        # Clear list var to reinit the whole list at once
+        self.gVar = []
+        # Clear selection var
+        self.sSelection = []
+
+        # Check if new selection is empty
+        if (selection == ()):
+            # If so, set current selection to nothing,
+            self.sSelection = []
+            # then return
+            return
+
+        for i in selection:
+            self.sSelection.append(self.students[i])
