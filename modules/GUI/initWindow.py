@@ -1,2 +1,3 @@
 class initWindow:
-    pass
+    def __init__(self) -> None:
+        

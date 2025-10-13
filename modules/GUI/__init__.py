@@ -1,10 +1,9 @@
-# from modules.GUI.dialog import dialog
+from tkinter import Tk
 from modules.GUI.mainWindow import mainWindow
 
 
+# This is a wrapper for file naming purposes
 class GUI:
     def __init__(self) -> None:
-        # run the init window
-        ## get the csv file to be working on
-        # run the main window
-        mainWindow()
+        self.root = Tk()
+        mainWindow(self.root)

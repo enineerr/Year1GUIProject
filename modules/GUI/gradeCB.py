@@ -6,7 +6,9 @@ class gradeCB:
         if (len(self.sSelection) != 1):
             return
 
+        # Get name and ID
         gInfo = dialog(self.sSelection, self.root).addGradeDialog()
+        # Make sure info isnt invalid
         if (gInfo is None):
             return
 
@@ -18,35 +20,41 @@ class gradeCB:
 
     def editGrade(self):
         # Only work if only 1 selection
-        if (len(self.sSelection) != 1):
+        if (len(self.RListSelection) != 1):
             return
 
-        name = dialog(self.students, self.root).addStudentDialog(inName=self.sSelection[0].Name, inId=str(self.sSelection[0].ID))
-        # Make sure user didnt edit to be blank
-        if (name is not None):
-            self.sSelection[0].Name = name[0]
-
-        self.updateBox2()
+        # get info
+        gInfo = dialog(self.sSelection, self.root).addGradeDialog(inName=list(self.sSelection[0].grades.keys())[self.RListSelection[0]], inGrade=str(self.sSelection[0].grades[list(self.sSelection[0].grades.keys())[self.RListSelection[0]]]))
+        # Make sure user didnt edit to be blank nor cancel
+        # if they did, return now.
+        if (gInfo is None):
+            return
+        if (gInfo[0] is None):
+            return
+        # delete grade
+        self.delGrade()
+        # add new grade
+        self.sSelection[0].addGrade(gInfo[0], gInfo[1])
 
     def delGrade(self, iList=None):
         # Reverse list to prevent indexs from changing after removals if drycall
         if (iList is None):
             iList = list(self.RListSelection)[::-1]
 
-        # index = 0
-        # for students in self.sSelection:
-        #     for j in students.grades.keys():
-        #         if iList[0] == index:
-        #             students.removeGrade(j)
-        #             iList.pop(0)
-        #             if (len(iList) > 0):
-        #                 self.delGrade(iList)
-        #             return
-        if (self.RListSelection == 1):
-            # This is awful but its better than alternatives
-            self.sSelection.removeGrade(list(self.sSelection.grades.keys())[iList[0]])
-        
-        self.updateBox2()
+        # This block manages mapping the two selections to remove a specific grade
+        index = 0
+        for students in self.sSelection:
+            for j in students.grades.keys():
+                if iList[0] == index:
+                    students.removeGrade(j)
+                    iList.pop(0)
+                    if (len(iList) > 0):
+                        self.delGrade(iList)
+
+                    # Allow quitting
+                    self.updateBox2()
+                    return
+                index += 1
 
     def updateBox2(self) -> None:
         # Clear list var to reinit the whole list at once
@@ -58,6 +66,7 @@ class gradeCB:
         if (self.LListSelection == ()):
             # If so, set current selection to nothing,
             self.sSelection = []
+            self.gStrVar.set(self.gVar)
             # then return
             return
 

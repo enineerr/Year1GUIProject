@@ -9,7 +9,7 @@ from modules.GUI.gradeCB import gradeCB
 
 
 class mainWindow(fileMan, studentCB, gradeCB):
-    def __init__(self) -> None:
+    def __init__(self, root) -> None:
         # This will be the main variable for storing all the ugc in memory
         self.students: list[Student] = []
 
@@ -22,7 +22,8 @@ class mainWindow(fileMan, studentCB, gradeCB):
 
         super().__init__()
         # Create root window
-        self.root = tk.Tk()
+        # self.root = tk.Tk()
+        self.root = root
 
         # Prepare LListBox (student) variable
         self.sVar = []
@@ -37,6 +38,8 @@ class mainWindow(fileMan, studentCB, gradeCB):
 
         # Set Title
         self.root.title("Student Grade Manager")
+
+        # Paint initWindow
 
         # Paint mainWindow
         self.mainWindow()
@@ -108,7 +111,7 @@ class mainWindow(fileMan, studentCB, gradeCB):
         gAddButton.grid(row=0, column=0, padx=5, pady=5, sticky="NW")
         gDelButton = ttk.Button(RFrame, text="Delete Grade", command=self.delGrade)
         gDelButton.grid(row=0, column=1, padx=5, pady=5, sticky="NW")
-        gEditButton = ttk.Button(RFrame, text="Edit Grade")
+        gEditButton = ttk.Button(RFrame, text="Edit Grade", command=self.editGrade)
         gEditButton.grid(row=0, column=2, padx=5, pady=5, sticky="NW")
         # Gen grades
         gGenButton = ttk.Button(RFrame, text="Generate Report")
@@ -123,7 +126,7 @@ class mainWindow(fileMan, studentCB, gradeCB):
         # R
         RList = Listbox(RFrame, selectmode="extended", exportselection=False, listvariable=self.gStrVar)
         RList.grid(column=0, row=1, padx=5, pady=5, columnspan=3, sticky="NESW")
-        RList.bind("<<ListboxSelect>>", lambda _: self.gUpdateSelection(LList.curselection()))
+        RList.bind("<<ListboxSelect>>", lambda _: self.gUpdateSelection(RList.curselection()))
 
         ## Scrollbars
         # L
