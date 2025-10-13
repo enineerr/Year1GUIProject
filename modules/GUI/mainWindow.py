@@ -8,7 +8,7 @@ from modules.GUI.studentCB import studentCB
 from modules.GUI.gradeCB import gradeCB
 
 
-class mainWindow(fileMan):
+class mainWindow(fileMan, studentCB, gradeCB):
     def __init__(self) -> None:
         # This will be the main variable for storing all the ugc in memory
         self.students: list[Student] = []
@@ -96,7 +96,8 @@ class mainWindow(fileMan):
         sEditButton = ttk.Button(LFrame, text="Edit Student", command=self.editStudent)
         sEditButton.grid(row=0, column=2, padx=5, pady=5, sticky="NW")
         # Grades
-        gAddButton = ttk.Button(RFrame, text="Add Grade", command=self.addGrade)
+        # gAddButton = ttk.Button(RFrame, text="Add Grade", command=self.addGrade)
+        gAddButton = ttk.Button(RFrame, text="Add Grade")
         gAddButton.grid(row=0, column=0, padx=5, pady=5, sticky="NW")
         gDelButton = ttk.Button(RFrame, text="Delete Grade")
         gDelButton.grid(row=0, column=1, padx=5, pady=5, sticky="NW")
@@ -133,75 +134,3 @@ class mainWindow(fileMan):
         # R
         RScroll.config(command=RList.yview)
         RList.config(yscrollcommand=RScroll.set)
-
-    def addStudent(self):
-        sInfo = dialog(self.students).addStudentDialog(self.root)
-        if (sInfo is None):
-            return
-
-        largestID = 0
-
-        if sInfo[1] == 0:
-            if (len(self.students) == 0):
-                largestID = 0
-            else:
-                for i in self.students:
-                    if (i.ID > largestID):
-                        largestID = i.ID
-
-            # Add one to make new unique ID
-            largestID += 1
-            sInfo[1] = largestID
-
-        # Add new student to memory in object form
-        self.students.append(Student(sInfo[0], sInfo[1]))
-
-        self.updateBox1()
-
-    def editStudent(self):
-        # Only work if only 1 selection
-        if (len(self.sSelection) != 1):
-            return
-
-        name = self.addStudentDialog(inName=self.sSelection[0].Name, inId=str(self.sSelection[0].ID))
-        # Make sure user didnt edit to be blank
-        if (name is not None):
-            self.sSelection[0].name = name[0]
-
-        self.updateBox1()
-
-    def delStudent(self):
-        for i in self.sSelection:
-            self.students.remove(i)
-        self.updateBox1()
-
-    def updateBox1(self) -> None:
-        # Clear list var to reinit the whole list at once
-        self.sVar = []
-
-        if (len(self.students) > 0):
-            for sObj in self.students:
-                for IDs, names in sObj().items():
-                    # this line grabs the ID's and the names, then concats them to make a single entry
-                    self.sVar.append(f"{names[0]} ({IDs})")
-
-        # Update gui list
-        self.sStrVar.set(self.sVar)
-
-    def updateBox2(self, selection) -> None:
-        # Clear list var to reinit the whole list at once
-        self.gVar = []
-        # Clear selection var
-        self.sSelection = []
-
-        # Check if new selection is empty
-        if (selection == ()):
-            # If so, set current selection to nothing,
-            self.sSelection = []
-            # then return
-            return
-
-        for i in selection:
-            # Make sure there are students to show
-            if (len(self.students) > 0):
-                self.sSelection.append(self.students[i])
