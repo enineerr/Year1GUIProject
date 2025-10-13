@@ -11,6 +11,34 @@ class dialog:
         # This var is only init here in case the user decides to exit the dialog instantly
         self.__out = None
 
+    def initDialog(self) -> int:
+        # 0 -> exit
+        # 1 -> open
+        # 2 -> new
+        self.dialog = Toplevel(self.root)
+        new = ttk.Button(self.dialog, text="New File", command=lambda: self.initOut(2))
+        new.grid(row=10, column=3, padx=5, pady=5, sticky="SE")
+        self.dialog.bind("<Return>", lambda _: new.invoke())
+        open = ttk.Button(self.dialog, text="Open", command=lambda: self.initOut(1))
+        open.grid(row=10, column=2, padx=5, pady=5, sticky="SE")
+        cancel = ttk.Button(self.dialog, text="Cancel", command=lambda: self.initOut(0))
+        cancel.grid(row=10, column=1, padx=5, pady=5, sticky="SE")
+
+        new.focus()
+
+        self.dialog.protocol("WM_DELETE_WINDOW", self.dialog.destroy)  # take over exit
+        self.dialog.transient(self.root)  # set to be dialong rather than main window
+        self.dialog.grab_set()  # prevent input to main window
+
+        # Wait for user to do something
+        self.dialog.wait_window()
+
+        return self.__out
+
+    def initOut(self, code: int):
+        self.__out = code
+        self.dialog.destroy()
+
     def addGradeDialog(self, inName: str = "", inGrade: str = "") -> dict[str, float] | None:
         self.dialog = Toplevel(self.root)  # init dialog
 
@@ -162,7 +190,7 @@ class dialog:
             return True
         # In anything else make sure is a number
         return val.isnumeric()
-    
+
     @staticmethod
     def checkGrade(val: str) -> bool:
         # Allowed numbers (0-9 inc)

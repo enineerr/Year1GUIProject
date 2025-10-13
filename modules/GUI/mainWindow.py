@@ -9,7 +9,7 @@ from modules.GUI.gradeCB import gradeCB
 
 
 class mainWindow(fileMan, studentCB, gradeCB):
-    def __init__(self, root) -> None:
+    def __init__(self) -> None:
         # This will be the main variable for storing all the ugc in memory
         self.students: list[Student] = []
 
@@ -22,8 +22,7 @@ class mainWindow(fileMan, studentCB, gradeCB):
 
         super().__init__()
         # Create root window
-        # self.root = tk.Tk()
-        self.root = root
+        self.root = tk.Tk()
 
         # Prepare LListBox (student) variable
         self.sVar = []
@@ -39,10 +38,16 @@ class mainWindow(fileMan, studentCB, gradeCB):
         # Set Title
         self.root.title("Student Grade Manager")
 
-        # Paint initWindow
-
         # Paint mainWindow
         self.mainWindow()
+
+        # Start initDialog
+        fChoice = dialog(self.students, self.root).initDialog()
+
+        match fChoice:
+            case 0: return
+            case 1: self.getFile()
+            case 2: self.saveAs()
 
         # Start mainloop
         self.root.mainloop()
