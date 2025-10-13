@@ -14,4 +14,8 @@ class Student:
         return {self.ID: [self.Name, self.grades]}
 
     def addGrade(self, courseName: str, grade: float):
-        self.grades[courseName] = grade
+        self.grades[courseName.title()] = grade
+
+    def removeGrade(self, key):
+        # self.grades.pop(list(self.grades.keys())[index])
+        del self.grades[key]

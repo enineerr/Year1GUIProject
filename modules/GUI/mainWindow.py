@@ -15,6 +15,11 @@ class mainWindow(fileMan, studentCB, gradeCB):
 
         self.sSelection: list[Student] = []
 
+        # Allow remembering the selection so box2 can be updated by grade a/e/d functions
+        self.LListSelection = ()
+        # Where as this is just for consistency
+        self.RListSelection = ()
+
         super().__init__()
         # Create root window
         self.root = tk.Tk()
@@ -26,6 +31,9 @@ class mainWindow(fileMan, studentCB, gradeCB):
         # Prepare RListBox (grades) variable
         self.gVar = []
         self.gStrVar = StringVar(value=self.gVar)
+
+        # Init working file var
+        self.workingFile = None
 
         # Set Title
         self.root.title("Student Grade Manager")
@@ -96,10 +104,9 @@ class mainWindow(fileMan, studentCB, gradeCB):
         sEditButton = ttk.Button(LFrame, text="Edit Student", command=self.editStudent)
         sEditButton.grid(row=0, column=2, padx=5, pady=5, sticky="NW")
         # Grades
-        # gAddButton = ttk.Button(RFrame, text="Add Grade", command=self.addGrade)
-        gAddButton = ttk.Button(RFrame, text="Add Grade")
+        gAddButton = ttk.Button(RFrame, text="Add Grade", command=self.addGrade)
         gAddButton.grid(row=0, column=0, padx=5, pady=5, sticky="NW")
-        gDelButton = ttk.Button(RFrame, text="Delete Grade")
+        gDelButton = ttk.Button(RFrame, text="Delete Grade", command=self.delGrade)
         gDelButton.grid(row=0, column=1, padx=5, pady=5, sticky="NW")
         gEditButton = ttk.Button(RFrame, text="Edit Grade")
         gEditButton.grid(row=0, column=2, padx=5, pady=5, sticky="NW")
@@ -110,14 +117,13 @@ class mainWindow(fileMan, studentCB, gradeCB):
 
         ## Listboxes
         # L
-        # LList = Listbox(LFrame, listvariable=valS, selectmode="extended", exportselection=False)
         LList = Listbox(LFrame, selectmode="extended", exportselection=False, listvariable=self.sStrVar)
         LList.grid(row=1, column=0, padx=5, pady=5, columnspan=3, sticky=("NESW"))
-        LList.bind("<<ListboxSelect>>", lambda _: self.updateBox2(LList.curselection()))
+        LList.bind("<<ListboxSelect>>", lambda _: self.sUpdateSelection(LList.curselection()))
         # R
-        # RList = Listbox(RFrame, listvariable=valS, selectmode="extended")
-        RList = Listbox(RFrame, selectmode="extended")
+        RList = Listbox(RFrame, selectmode="extended", exportselection=False, listvariable=self.gStrVar)
         RList.grid(column=0, row=1, padx=5, pady=5, columnspan=3, sticky="NESW")
+        RList.bind("<<ListboxSelect>>", lambda _: self.gUpdateSelection(LList.curselection()))
 
         ## Scrollbars
         # L
@@ -134,3 +140,10 @@ class mainWindow(fileMan, studentCB, gradeCB):
         # R
         RScroll.config(command=RList.yview)
         RList.config(yscrollcommand=RScroll.set)
+
+    def sUpdateSelection(self, selection):
+        self.LListSelection = selection
+        self.updateBox2()
+
+    def gUpdateSelection(self, selection):
+        self.RListSelection = selection

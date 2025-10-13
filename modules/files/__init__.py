@@ -8,8 +8,9 @@ class files:
         self.workingFile = path(dir)
 
         if (not path.exists(self.workingFile)):
-            with open(self.workingFile, "w"):
-                return
+            if (not path.is_dir(self.workingFile)):
+                with open(self.workingFile, "w"):
+                    return
 
     def saveFile(self, students: list[Student]):
         sDict = {}
