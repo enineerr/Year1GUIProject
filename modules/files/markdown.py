@@ -13,7 +13,7 @@ class markdown:
         out = ""
         for i in self.students:
             out += (f"# {i.Name}\n")
-            out += (self.genTable(i) + "\n")
+            out += (self.genTable(i))
             out += (f"## Final Grade: {self.calcFinal(i)}\n\n")
 
         return out

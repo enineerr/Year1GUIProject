@@ -45,4 +45,8 @@ class fileMan:
 
         if (file != ()):
             with open(file, "w") as f:
-                f.write(markdown.markdown(self.sSelection).genReport())
+                # Report all students if none are selected
+                if (len(self.sSelection) == 0):
+                    f.write(markdown.markdown(self.students).genReport())
+                else:
+                    f.write(markdown.markdown(self.sSelection).genReport())
