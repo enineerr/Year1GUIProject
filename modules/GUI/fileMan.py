@@ -1,6 +1,6 @@
 from tkinter import filedialog, messagebox
 from json import JSONDecodeError
-from modules.files import files
+from modules.files import files, markdown
 
 
 class fileMan:
@@ -10,6 +10,7 @@ class fileMan:
         # Make sure something was selected, if not return
         if (file != ()):
             self.workingFile = files(file)
+            # If save is true, file will be overwritten, therefore do not try to read.
             if (not save):
                 try:
                     self.students = self.workingFile.readFile()
@@ -38,3 +39,10 @@ class fileMan:
             if (messagebox.askokcancel("No file selected", "Would you like to choose a file to save to?")):
                 self.getFile(True)
                 self.saveFile()
+
+    def saveReport(self):
+        file = filedialog.asksaveasfilename()
+
+        if (file != ()):
+            with open(file, "w") as f:
+                f.write(markdown.markdown(self.sSelection).genReport())

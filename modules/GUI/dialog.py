@@ -217,6 +217,3 @@ class dialog:
 
         # If all other conditions are fine then return True
         return True
-
-    def addGrade(self) -> None:
-        pass

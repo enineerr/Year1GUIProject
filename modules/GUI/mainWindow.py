@@ -13,6 +13,7 @@ class mainWindow(fileMan, studentCB, gradeCB):
         # This will be the main variable for storing all the ugc in memory
         self.students: list[Student] = []
 
+        # Left box selection but referenced using student objects from main list
         self.sSelection: list[Student] = []
 
         # Allow remembering the selection so box2 can be updated by grade a/e/d functions
@@ -51,6 +52,11 @@ class mainWindow(fileMan, studentCB, gradeCB):
 
         # Start mainloop
         self.root.mainloop()
+
+        if (self.workingFile is not None):
+            self.saveFile()
+        else:
+            self.saveAs()
 
     def mainWindow(self) -> None:
         # Init menubar
@@ -119,7 +125,7 @@ class mainWindow(fileMan, studentCB, gradeCB):
         gEditButton = ttk.Button(RFrame, text="Edit Grade", command=self.editGrade)
         gEditButton.grid(row=0, column=2, padx=5, pady=5, sticky="NW")
         # Gen grades
-        gGenButton = ttk.Button(RFrame, text="Generate Report")
+        gGenButton = ttk.Button(RFrame, text="Generate Report", command=self.saveReport)
         gGenButton.grid(row=2, column=2, sticky="SE", columnspan=2)
         gGenButton["padding"] = (5, 0, 5, 5)
 
