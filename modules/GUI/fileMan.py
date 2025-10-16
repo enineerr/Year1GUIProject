@@ -24,7 +24,10 @@ class fileMan:
     def saveAs(self) -> None:
         file = filedialog.asksaveasfilename()
 
-        if (file != ()):
+        # () is returned on cancel on unix
+        # "." is returned on NT
+        # thanks tkinter
+        if ((file != ()) or file != "."):
             self.workingFile = files(file)
             self.saveFile()
 
@@ -43,7 +46,10 @@ class fileMan:
     def saveReport(self):
         file = filedialog.asksaveasfilename()
 
-        if (file != ()):
+        # () is returned on cancel on unix
+        # "." is returned on NT
+        # thanks tkinter
+        if ((file != ()) or file != "."):
             with open(file, "w") as f:
                 # Report all students if none are selected
                 if (len(self.sSelection) == 0):
