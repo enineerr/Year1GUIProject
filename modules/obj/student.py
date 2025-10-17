@@ -17,5 +17,4 @@ class Student:
         self.grades[courseName.title()] = grade
 
     def removeGrade(self, key):
-        # self.grades.pop(list(self.grades.keys())[index])
         del self.grades[key]

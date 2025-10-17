@@ -8,7 +8,7 @@ class fileMan:
         file = filedialog.askopenfilename()
 
         # Make sure something was selected, if not return
-        if (file != ()):
+        if ((file != ()) or file != "."):
             self.workingFile = files(file)
             # If save is true, file will be overwritten, therefore do not try to read.
             if (not save):
@@ -34,8 +34,13 @@ class fileMan:
     def saveFile(self) -> None:
         # Check if there is a file yet
         if (self.workingFile is not None):
-            # if so try saving to it
-            self.workingFile.saveFile(self.students)
+            # Hard fix for tkinter windows implementation of filedialogs being completely different and returning local directory when cancelled???
+            if (str(self.workingFile.workingFile) == "."):
+                self.workingFile = None
+                self.saveFile()
+            else:
+                # if so try saving to it
+                self.workingFile.saveFile(self.students)
         # Otherwise get the file and retry saving
         else:
             # See if the user wants to try again or not.
