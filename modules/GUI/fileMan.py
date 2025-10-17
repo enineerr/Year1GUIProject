@@ -8,7 +8,7 @@ class fileMan:
         file = filedialog.askopenfilename()
 
         # Make sure something was selected, if not return
-        if (file != ()):
+        if ((file != ()) or file != "."):
             self.workingFile = files(file)
             # If save is true, file will be overwritten, therefore do not try to read.
             if (not save):
