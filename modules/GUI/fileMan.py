@@ -8,7 +8,7 @@ class fileMan:
         file = filedialog.askopenfilename()
 
         # Make sure something was selected, if not return
-        if ((file != ()) or file != "."):
+        if ((file != ()) and (file != ".")):
             self.workingFile = files(file)
             # If save is true, file will be overwritten, therefore do not try to read.
             if (not save):
@@ -27,7 +27,7 @@ class fileMan:
         # () is returned on cancel on unix
         # "." is returned on NT
         # thanks tkinter
-        if ((file != ()) or file != "."):
+        if ((file != ()) and (file != ".")):
             self.workingFile = files(file)
             self.saveFile()
 
@@ -54,7 +54,7 @@ class fileMan:
         # () is returned on cancel on unix
         # "." is returned on NT
         # thanks tkinter
-        if ((file != ()) or file != "."):
+        if ((file != ()) and (file != ".")):
             with open(file, "w") as f:
                 # Report all students if none are selected
                 if (len(self.sSelection) == 0):
