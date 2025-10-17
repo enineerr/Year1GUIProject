@@ -42,21 +42,22 @@ class mainWindow(fileMan, studentCB, gradeCB):
         # Paint mainWindow
         self.mainWindow()
 
-        # Start initDialog
-        fChoice = dialog(self.students, self.root).initDialog()
+        # # Start initDialog
+        # fChoice = dialog(self.students, self.root).initDialog()
 
-        match fChoice:
-            case 0: return
-            case 1: self.getFile()
-            case 2: self.saveAs()
+        # match fChoice:
+        #     case 0: return
+        #     case 1: self.getFile()
+        #     case 2: self.saveAs()
+        
 
         # Start mainloop
         self.root.mainloop()
 
-        if (self.workingFile is not None):
-            self.saveFile()
-        else:
-            self.saveAs()
+        # if (self.workingFile is not None):
+        #     self.saveFile()
+        # else:
+        #     self.saveAs()
 
     def mainWindow(self) -> None:
         # Init menubar

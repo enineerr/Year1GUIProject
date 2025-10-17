@@ -23,7 +23,7 @@ class studentCB:
             sInfo[1] = largestID
 
         # Add new student to memory in object form
-        self.students.append(Student(sInfo[0], sInfo[1]))
+        self.students.append(Student(sInfo[0], sInfo[1], {}))
 
         self.updateBox1()
 
